@@ -9,7 +9,7 @@
 import UIKit
 
 class ZHAutoLinesLabel: UILabel {
-    var contentInset: UIEdgeInsets = UIEdgeInsetsZero {
+    var contentInset: UIEdgeInsets = .zero {
         didSet {
             // Force label to update
             let originalText = self.text
@@ -29,15 +29,15 @@ class ZHAutoLinesLabel: UILabel {
         setup()
     }
     
-    private func setup() {
+    fileprivate func setup() {
         // Content is never compressed
-        self.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
-        self.setContentCompressionResistancePriority(1000, forAxis: .Vertical)
+        self.setContentCompressionResistancePriority(1000, for: .horizontal)
+        self.setContentCompressionResistancePriority(1000, for: .vertical)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let targetWidth = CGRectGetWidth(self.bounds)
+        let targetWidth = self.bounds.width
         // Once label's widht is changed, update preferredMaxLayoutWidth, this will lead recall textRectForBounds
         if self.preferredMaxLayoutWidth != targetWidth {
             self.preferredMaxLayoutWidth = targetWidth
@@ -46,17 +46,17 @@ class ZHAutoLinesLabel: UILabel {
         self.superview?.setNeedsLayout()
     }
     
-    override func drawTextInRect(rect: CGRect) {
+    override func drawText(in rect: CGRect) {
         // Rect has been veritcally expanded in textRectForBounds
-        super.drawTextInRect(UIEdgeInsetsInsetRect(rect, contentInset))
+        super.drawText(in: UIEdgeInsetsInsetRect(rect, contentInset))
     }
     
-    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+    override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         // Use a shrinked rect to calculate new rect, this will lead to a higher rectangle to draw
         // The width is same as preferredMaxLayoutWidth
         // Reference: http://stackoverflow.com/questions/21167226/resizing-a-uilabel-to-accomodate-insets
         
-        var rect = super.textRectForBounds(UIEdgeInsetsInsetRect(bounds, contentInset), limitedToNumberOfLines: numberOfLines)
+        var rect = super.textRect(forBounds: UIEdgeInsetsInsetRect(bounds, contentInset), limitedToNumberOfLines: numberOfLines)
         // Move rect to origin
         rect.origin.x    -= contentInset.left;
         rect.origin.y    -= contentInset.top;
