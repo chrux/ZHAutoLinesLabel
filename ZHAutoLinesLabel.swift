@@ -31,8 +31,8 @@ class ZHAutoLinesLabel: UILabel {
     
     fileprivate func setup() {
         // Content is never compressed
-        self.setContentCompressionResistancePriority(1000, for: .horizontal)
-        self.setContentCompressionResistancePriority(1000, for: .vertical)
+        self.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
+        self.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
     }
     
     override func layoutSubviews() {
